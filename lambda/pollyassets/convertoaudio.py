@@ -22,9 +22,6 @@ def lambda_handler(event, context):
     
     rest = text
     
-    #Because single invocation of the polly synthesize_speech api can 
-    # transform text with about 1,500 characters, we are dividing the 
-    # post into blocks of approximately 1,000 characters.
     textBlocks = []
     while (len(rest) > 1100):
         begin = 0
@@ -47,9 +44,6 @@ def lambda_handler(event, context):
             VoiceId = voice
         )
         
-        #Save the audio stream returned by Amazon Polly on Lambda's temp 
-        # directory. If there are multiple text blocks, the audio stream
-        # will be combined into a single file.
         if "AudioStream" in response:
             with closing(response["AudioStream"]) as stream:
                 output = os.path.join("/tmp/", postId)
